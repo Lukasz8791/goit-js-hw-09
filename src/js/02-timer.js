@@ -30,9 +30,9 @@ const alertElement = document.getElementById('alert');
 let countdownInterval;
 
 startButton.addEventListener('click', () => {
-  const selectedDate = flatpickr('#datetime-picker').selectedDates[0];
+  const selectedDate = flatpickr('#datetime-picker').selectedDates;
 
-  if (!selectedDate || selectedDate <= new Date()) {
+  if (!selectedDate || selectedDate[0] <= new Date()) {
     showAlert('Please choose a valid future date');
     return;
   }
@@ -41,7 +41,7 @@ startButton.addEventListener('click', () => {
 
   countdownInterval = setInterval(() => {
     const currentTime = new Date().getTime();
-    const timeDifference = selectedDate - currentTime;
+    const timeDifference = selectedDate[0] - currentTime;
 
     if (timeDifference <= 0) {
       clearInterval(countdownInterval);
@@ -51,7 +51,12 @@ startButton.addEventListener('click', () => {
     }
 
     const { days, hours, minutes, seconds } = convertMs(timeDifference);
-    updateTimer(days, hours, minutes, seconds);
+    updateTimer(
+      addLeadingZero(days),
+      addLeadingZero(hours),
+      addLeadingZero(minutes),
+      addLeadingZero(seconds)
+    );
   }, 1000);
 });
 
@@ -64,12 +69,12 @@ function resetTimer() {
 
 function updateTimer(days, hours, minutes, seconds) {
   daysElement.textContent = days;
-  hoursElement.textContent = formatTimeValue(hours);
-  minutesElement.textContent = formatTimeValue(minutes);
-  secondsElement.textContent = formatTimeValue(seconds);
+  hoursElement.textContent = hours;
+  minutesElement.textContent = minutes;
+  secondsElement.textContent = seconds;
 }
 
-function formatTimeValue(value) {
+function addLeadingZero(value) {
   return value < 10 ? `0${value}` : value;
 }
 
