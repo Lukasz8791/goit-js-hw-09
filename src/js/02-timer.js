@@ -47,12 +47,13 @@ startButton.addEventListener('click', () => {
       clearInterval(countdownInterval);
       resetTimer();
       showAlert('Countdown complete!');
+      startButton.disabled = false;
       return;
     }
 
     const { days, hours, minutes, seconds } = convertMs(timeDifference);
     updateTimer(
-      addLeadingZero(days),
+      formatTimeValue(days),
       addLeadingZero(hours),
       addLeadingZero(minutes),
       addLeadingZero(seconds)
@@ -75,7 +76,11 @@ function updateTimer(days, hours, minutes, seconds) {
 }
 
 function addLeadingZero(value) {
-  return value < 10 ? `0${value}` : value;
+  return String(value).padStart(2, '0');
+}
+
+function formatTimeValue(value) {
+  return String(value).padStart(2, '0');
 }
 
 function convertMs(ms) {
