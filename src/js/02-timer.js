@@ -18,7 +18,7 @@ const options = {
   },
 };
 
-flatpickr('#datetime-picker', options);
+const instance = flatpickr('#datetime-picker', options);
 
 const startButton = document.querySelector('[data-start]');
 const daysElement = document.querySelector('[data-days]');
@@ -30,7 +30,7 @@ const alertElement = document.getElementById('alert');
 let countdownInterval;
 
 startButton.addEventListener('click', () => {
-  const selectedDate = flatpickr('#datetime-picker').selectedDates;
+  const selectedDate = instance.selectedDates;
 
   if (!selectedDate || selectedDate[0] <= new Date()) {
     showAlert('Please choose a valid future date');
